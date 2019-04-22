@@ -1,0 +1,126 @@
+<!-- ******************************************************************************************************************************
+* Copyright(C)2019
+* Soltech
+* All Rights Reserved
+* Name      : HOG_Selectclientcomponent.cmp
+* Purpose   : This component is used  to display the insurance record based on the client and create&update insurance 
+
+**********************************************************************************************************************************
+*   Version No                   Name                           Date                                Description
+
+* ================================================================================================================================
+*        1.0                   Rizwan Mohammed                     04/05/2019                        Initial Version
+       
+*********************************************************************************************************************************** -->
+
+<aura:component controller="HOG_ClientInsuranceController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <!--Created ListOfRecords attribute to store insurance record-->
+    <aura:attribute name="ListOfRecords" type="List"/>
+    <!--Created alertMessage attribute to store alert message enter by the user--> 
+    <aura:attribute name="alertMessage" type="string"/>
+    <!--Created ClientName attribute to display client on the page-->
+    <aura:attribute name="ClientName" type="string"/>
+    <!--Created orderId attribute to store orderid-->
+    <aura:attribute name="orderId" type="string"/>
+    <!--Created selectedClientId attribute to store selectedClientId-->
+    <aura:attribute name="selectedClientId" type="string"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    
+   
+        
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_2-of-12 Form_align">
+            <span>
+                <div class="input_label">Update Insurance</div>
+            </span>
+            ClientName: {!v.ClientName}
+        </div>
+        <div >
+         
+        <span>
+         <div align="left">   
+              
+        <label class="slds-form-element__label slds-text-body_regular">Insurance</label>
+            </div>
+             <div align="right">
+        <lightning:button variant="brand" label="New" title="New" onclick="{! c.newInsuranceForm}"/>
+         </div>
+        </span>
+        </div>
+     <div class="slds-grid slds-wrap custwrap" >
+        
+            <!-- Displaying Insurance records in the form of table-->
+        <table align="left" class="slds-table slds-table_bordered slds-table_striped slds-table_resizable-cols slds-border_left slds-border_right" >
+            
+            <thead>
+                
+                <tr class="slds-line-height_reset  ">
+                    
+                    <th class="slds-is-sortable" scope="col">
+                        <div class="slds-truncate slds-is-sortable" title="Policy #"> Policy #</div>
+                        
+                    </th>
+                    
+                    <th class="slds-is-sortable" scope="col">
+                        <div class="slds-truncate slds-is-sortable" title="order"> order </div>
+                        
+                    </th>
+                    
+                    <th class="slds-is-sortable" scope="col">
+                        <div class="slds-truncate slds-is-sortable" title="Category ">Category</div>
+                        
+                    </th>
+                    
+                    <th class="slds-is-sortable" scope="col">
+                        <div class="slds-truncate slds-is-sortable" title="Provider"> Provider </div>
+                        
+                    </th>
+                    
+                    <th class="slds-is-sortable" scope="col">
+                        <div class="slds-truncate slds-is-sortable" title="Plan Name">Plan Name</div>
+                        
+                    </th>
+                    
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration items="{!v.ListOfRecords}" var="Record"> 
+                    
+                    <tr>
+                        
+                        <th scope="row">
+                            <a href="javascript:void(0);" data-IncId="{!Record.Id}" onclick="{!c.OpenEditModel}"  data-aura-class="forceActionLink" >
+                                <div class="slds-truncate" title="{!Record.Policy_Number__c}">{!Record.Policy_Number__c}</div>
+                            </a>     
+                        </th>
+                        
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!Record.Coverage_Order__c}">{!Record.Coverage_Order__c}</div>
+                        </th>
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!Record.Category__c}">{!Record.Category__c}</div>
+                        </th>
+                        
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!Record.Insurance_Provider_Name__c}">{!Record.Insurance_Provider_Name__c}</div>
+                        </th>
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!Record.Plan_Name__c}">{!Record.Plan_Name__c}</div>
+                        </th>
+                        
+                        
+                    </tr>
+                    
+                </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+    <div class="slds-m-top_medium" align="right">
+        <lightning:button variant="brand" onclick="{! c.Back }" name="Back" label="Back" />
+        <lightning:button disabled="{!v.disabled}" variant="brand" onclick="{! c.Next }" name="Next" label="Next" />
+    </div>
+    <ui:inputTextArea aura:id="comments" label="Alerts" value="{!v.alertMessage}" rows="5"/>
+    
+</aura:component>

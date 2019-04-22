@@ -1,0 +1,53 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction,lightning:actionOverride,force:hasRecordId" access="global">
+     <!-- Invoking standard SLDS-->
+    <ltng:require styles="{!$Resource.SLDS283}"/>
+    <!--created attribute to store selected clientchatId -->
+    <aura:attribute name="selectedClientId" type="string"/>
+    <!--created attribute to store order information-->
+    <aura:attribute name="OrderId" type="String" description="The order object from the "/>
+    <!-- attributes -->
+    <aura:attribute name="steps" type="List"/>
+    <aura:attribute name="order" type="Order" description="The order object from the "/>
+    <aura:attribute name="loadorderrecordError" type="String"/>
+
+
+    <force:recordData aura:id="recordLoader"
+        layoutType="FULL"
+        recordId="{!v.recordId}"
+        targetError="{!v.loadorderrecordError}"
+        targetFields ="{!v.order}"
+        mode="VIEW"/>
+
+
+    <!--handlers-->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:handler event="c:SaveClientEvent" action="{!c.handleNewClientSelected}" />
+    
+    <lightning:layout>
+        <lightning:layoutItem size="12" padding="around-small">
+            <lightning:progressIndicator currentStep="{!v.order.Order_Step__c}" type="path" variant="base">
+                <aura:iteration items="{!v.steps}" var="step">
+                    <lightning:progressStep label="{!step.label}" value="{!step.value}"/>
+                </aura:iteration>
+            </lightning:progressIndicator>
+        </lightning:layoutItem>
+    </lightning:layout>
+    <aura:if isTrue="{!not(empty(v.loadorderrecordError))}">
+        <div class="recordError">
+            {!v.loadorderrecordError}
+        </div>
+    </aura:if>
+    <!--<aura:renderIf isTrue="{!v.order.Order_Step__c == 'Select Client'}">-->
+        <c:HOG_Selectclientcomponent recordId="{!v.order.Id}" />
+        <c:HOG_ShippingInformation  recordId="{!v.order.Id}" selectedClientId= "{!v.order.Client_Chart__c}"/>
+                                    
+        <c:HOG_UpdateInsurance recordId="{!v.order.Id}" />
+        <c:HOG_OrderInstructions recordId="{!v.order.Id}" />
+
+
+    <aura:set attribute="else">
+      False
+    </aura:set>
+  <!--</aura:renderIf>--> 
+  
+</aura:component>

@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Event to pass selected client to main comonent">
+    <aura:attribute name="order" type="Order" />
+</aura:event>

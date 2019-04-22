@@ -1,0 +1,43 @@
+<!-- ******************************************************************************************************************************
+* Copyright(C)2019
+* Soltech
+* All Rights Reserved
+* Name      : HOG_Selectclientcomponent.cmp
+* Purpose   : This component is used  to show the list of clients in the lookup field and save to order   
+
+**********************************************************************************************************************************
+*   Version No                   Name                           Date                                Description
+
+* ================================================================================================================================
+*        1.0                   Rizwan Mohammed                     04/05/2019                        Initial Version
+       
+*********************************************************************************************************************************** -->
+
+
+<aura:component controller="HOG_ClientShippingInfo" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:actionOverride" access="global" >
+    <!-- Invoking standard SLDS-->
+    <ltng:require styles="{!$Resource.SLDS283}"/>
+    <!--created attribute to disable or enable the button--> 
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <!--created attribute to store selected clientchatId -->
+    <aura:attribute name="selectedClientId" type="string"/>
+    <!--created attribute to store order information-->
+    <aura:attribute name="order" type="Order" description="The order object from the "/>
+    <!--Created attribute to get standard recordId from the details page-->
+    <aura:attribute name="recordId" type="string"/>
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--recordEditForm is used to display output fields and input fields based on object-->
+    <lightning:recordEditForm objectApiName="Order">
+        <!-- the messages component is for error messages -->
+        <lightning:messages />
+        
+        <lightning:inputField fieldName= "Client_Chart__c" onchange= "{!c.selectedClient}" aura:id="Client"/>
+        <div class="slds-m-top_medium">
+            <lightning:button disabled="{!v.disabled}" variant="brand" onclick="{! c.OrderStart}" name="OrderStart" label="Order Start" />
+        </div>
+    </lightning:recordEditForm>
+    
+    
+</aura:component>

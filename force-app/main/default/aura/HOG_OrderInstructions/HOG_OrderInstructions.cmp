@@ -1,0 +1,78 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+  
+   <aura:attribute name="disabled" type="Boolean" default="false" />
+   <aura:attribute name="OrderId" type="String"/> 
+   <aura:attribute name="Order" type="Order" default="{'sobjectType': 'Order'}"/> 
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    
+   <lightning:layout multipleRows="true">
+      
+      <lightning:layoutItem size="6">
+          <label><b>Order Instructions</b></label><br/>
+          
+          <lightning:recordViewForm aura:id="viewForm" 
+                                      recordId="{!v.OrderId}"
+                                      objectApiName="Order">
+            
+                <lightning:outputField fieldName="clientname__c" />
+                
+           
+        </lightning:recordViewForm>
+       </lightning:layoutItem>
+        
+    </lightning:layout>
+       <lightning:recordEditForm  aura:id="editForm" onload="{!c.handleLoad}"
+                                    
+                                    onsuccess="{!c.saverecord}"
+                                    recordId="{!v.OrderId}"
+                                  objectApiName="Order">
+        <lightning:layoutItem size="6">
+            
+              <lightning:inputField aura:id = "Deliverbydate" fieldName="deliver_by_date__c" value="{!v.Order.deliver_by_date__c}" />
+          
+            </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+         </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+            
+		  <lightning:inputField aura:id = "Instructions"  fieldName="Instructions__c" value="{!v.Order.Instructions__c}"/>
+        
+            </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+         </lightning:layoutItem>
+		  <lightning:layoutItem size="6">
+		   
+              <lightning:inputField aura:id = "Rhpconsultant" fieldName="RPH_Consult__c" value="{!v.Order.RPH_Consult__c}" />
+          
+		 </lightning:layoutItem>
+      
+        <lightning:layoutItem size="6">
+         </lightning:layoutItem>
+		 <lightning:layoutItem size="6">
+			<div class="slds-clearfix slds-float_right"> <br></br>
+		  
+				   <lightning:button disabled="{!v.disabled}" variant="brand" type="submit" name="save" label="Create order" />
+		   </div>
+		</lightning:layoutItem>
+        </lightning:recordEditForm>
+        <lightning:layoutItem size="6">
+         </lightning:layoutItem>
+    <br/><br/> <br/><br/>
+    
+ <lightning:layout multipleRows="true"> 
+        <lightning:layoutItem size="6">
+            <label><b>Previous Order Information</b></label><br/>
+            <lightning:recordViewForm aura:id="viewForm" 
+                                      recordId="{!v.OrderId}"
+                                      objectApiName="Order">
+          
+                <lightning:outputField fieldName="Previous_Order__c" />
+                <lightning:outputField fieldName="Previous_Instructions__c" />
+           
+        </lightning:recordViewForm>
+        </lightning:layoutItem>
+		 
+    </lightning:layout> 
+    
+</aura:component>

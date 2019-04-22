@@ -1,0 +1,23 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	    
+     <!-- Create attribute to store lookup value as a sObject--> 
+     <aura:attribute name="selectedLookUpRecord" type="sObject" default="{}"/>
+     
+     <aura:attribute name="objContact" type="Client_Chart__c" default="{'sobjectType':'Client_Chart__c'}"/>
+    
+     <!-- here c: is org. namespace prefix
+      <c:customLookup objectAPIName="Client_Chart__c" IconName="standard:Client_Chart__c" selectedRecord="{!v.selectedLookUpRecord}" label="Account Name"/>
+     
+     <lightning:button variant="neutral" label="Next" title="Next" onclick="{! c.Next }"/>
+    -->
+
+  
+      <div class="slds-m-around_large">
+         
+           <c:customLookup objectAPIName="Client_Chart__c" IconName="standard:account" label="Client Name" selectedRecord="{!v.selectedLookUpRecord}"/>    
+      <br/> 
+      
+    <button class="slds-utton slds-button_brand" onclick="{!c.Next}">Next</button>    
+  </div>       
+    
+</aura:component>

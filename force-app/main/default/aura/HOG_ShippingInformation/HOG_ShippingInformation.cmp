@@ -1,0 +1,159 @@
+<aura:component controller="Pharmacycontroller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="selectedClientId" type="string"/>
+    <aura:attribute name="orderId" type="string"/>
+    <aura:attribute name="selectedLookUpRecord" type="sObject"/>
+    <aura:attribute name="Order" type="Order" default="{'sobjectType':'Order' }"/>
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="picklistValues" type="Object" />
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+  
+    <aura:attribute name="clientName" type="Client_Chart__c"/>
+    <aura:attribute name="shipNamevalidation" type="Boolean" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-text-heading_large">
+        <b>    <h4>Shipping Information</h4></b> <br></br>
+    </div>
+    
+    
+    <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="6">
+       
+            <label>Client Name</label><br/>
+            <ui:outputText aura:id="NameID" value="{!v.clientName.Name}" />
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+            <label>Date of Birth</label><br/>
+            <ui:outputText  value="{!v.clientName.Date_of_Birth__c}"  />
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+        </lightning:layoutItem>
+     
+
+        <lightning:layoutItem size="6">
+            <lightning:recordEditForm  objectApiName="Order" recordId="{!v.orderId}" onsubmit="{!c.NextScreen}"> 
+                <label for="Phone">Phone</label>
+                
+                <lightning:inputField  aura:id = "Phone" fieldName="Phone__c" value="{!v.Order.Phone__c}" variant="label-hidden" />
+            </lightning:recordEditForm>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="6">
+            <lightning:recordEditForm  objectApiName="Order" recordId="{!v.orderId}"  onsubmit="{!c.SubmitPlacedbyfiled}">  
+                <label for="PlacedBy">Placed By</label>
+                <lightning:inputField  aura:id = "PlacedBy" fieldName="Placed_by__c" value="{!v.Order.Placed_by__c}" variant="label-hidden"/>
+            </lightning:recordEditForm>
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="6">
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+            <lightning:recordEditForm  objectApiName="Order" recordId="{!v.orderId}">
+                <label for="ShipToName">Ship To Name</label>
+                <lightning:inputField  aura:id = "ShipToName" fieldName="Ship_To_Name__c" value="{!v.Order.Ship_To_Name__c}" variant="label-hidden" />
+            </lightning:recordEditForm> 
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="6">
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+            <lightning:recordEditForm  objectApiName="Order" recordId="{!v.orderId}"> 
+                
+                <!--label for="Shippadd">Shipping Address</label-->
+                <lightning:inputField  aura:id = "shipAddid" fieldName="Shipping_Address__c" value="{!v.Order.Shipping_Address__c}" variant="label-hidden" />
+            </lightning:recordEditForm> 
+            <!--<c:customLookupreusable objectAPIName="Address__c" IconName="standard:Address" label="Shipping Address" selectedRecord="{!v.selectedLookUpRecord}"/>   -->
+            
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+            <br/>
+            <div class="slds-float_left slds-p-top_x-small">
+                <lightning:button variant="brand" onclick="{! c.openModel }" name="New" label="New" />
+                <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+                <aura:if isTrue="{!v.isOpen}">
+                    
+                    <!--###### MODAL BOX Start######--> 
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container " >
+                            <!-- ###### MODAL BOX HEADER Start ######-->
+                            <header class="slds-modal__header">
+                                <lightning:buttonIcon iconName="utility:close"
+                                                      onclick="{! c.closeModel }"
+                                                      alternativeText="close"
+                                                      variant="bare-inverse"
+                                                      class="slds-modal__close"/>
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create New Shipping Address</h2>
+                            </header>
+                            <!--###### MODAL BOX BODY Part Start######-->
+                            <!--   <div class="slds-modal__content slds-p-left_x-small slds-p-right_x-small " >-->
+                            
+                            <lightning:recordEditForm aura:id="recordEditForm"
+                                                      objectApiName="Address__c"
+                                                      onsuccess="{!c.closeModel1}"
+                                                      onsubmit="{!c.handleSubmit}">
+                                <lightning:messages />
+                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                    <div class="slds-grid slds-grid--pull-padded">
+                                        <div class="slds-p-horizontal--large slds-large-size--1-of-2 slds-medium-size--1-of-2 slds-small-size--1-of-1 slds-x-small-size--1-of-1 slds-m-bottom--medium">
+                                            
+                                            
+                                            <lightning:inputField fieldName="Name" aura:id="NameField" required ="true "/>
+                                            <lightning:inputField fieldName="Street_Name_2__c" aura:id="StreetFieldID" required ="true "/>
+                                            <lightning:inputField fieldName="City__c" aura:id="CityFieldID" required ="true "/>
+                                            <lightning:inputField fieldName="State__c" aura:id="StateFieldID" required ="true " />
+                                            <lightning:inputField fieldName="County__c" aura:id="CoutyFieldID" required ="true "/>
+                                            <lightning:inputField fieldName="Zip_Code__c" aura:id="ZipFieldID" required ="true "/>
+                                        </div>
+                                        <div class="slds-p-horizontal--large slds-large-size--1-of-2 slds-medium-size--1-of-2 slds-small-size--1-of-1 slds-x-small-size--1-of-1 slds-m-bottom--medium">
+                                            
+                                            
+                                            <lightning:inputField fieldName="Address_Type__c" aura:id="addreesTypeID"  required ="true "/>
+                                            <lightning:inputField fieldName="Address_Purpose__c" aura:id="addreespurposeID" required ="true "/><br></br><br></br><br></br><br></br>
+                                            <lightning:button class="slds-m-top_small" type="submit" label="Create new"/>
+                                        </div>
+                                        
+                                        
+                                    </div> 
+                                </div>
+                            </lightning:recordEditForm>
+                            
+                            
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                    <!--###### MODAL BOX Part END Here ######-->
+                    
+                </aura:if>
+                
+                
+            </div>  
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+            <lightning:recordEditForm  objectApiName="Order" recordId="{!v.orderId}">  
+                <label for="Signaturerequired">Signature</label>
+                <lightning:inputField  aura:id = "Signaturerequired" fieldName="Signature__c" value="{!v.Order.Signature__c}" variant="label-hidden" />
+            </lightning:recordEditForm>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+        </lightning:layoutItem>
+        <lightning:layoutItem size="6">
+            <br></br>
+            <div class="slds-clearfix">
+                <div class="slds-float_left">
+                    <lightning:button disabled="{!v.disabled}" variant="brand" onclick="{! c.Previous }" name="Previous" label="Previous" />
+                </div>
+                <div class="slds-float_right">
+                    <lightning:button disabled="{!v.disabled}" variant="brand" onclick="{! c.NextScreen }" name="Next" label="Next" />
+                </div>
+            </div>
+        </lightning:layoutItem>
+      
+  
+    </lightning:layout> 
+     
+</aura:component>

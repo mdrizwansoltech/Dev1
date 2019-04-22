@@ -1,0 +1,41 @@
+<!--******************************************************************************************************************************
+* Copyright(C)2019
+* Soltech
+* All Rights Reserved
+* Name      : HOG_ShippingInfo.cmp
+* Purpose   : This component is used  to show the shipping address information   
+
+**********************************************************************************************************************************
+*   Version No                   Name                           Date                                Description
+
+* ================================================================================================================================
+*        1.0                   Rizwan Mohammed                     04/05/2019                        Initial Version
+       
+*********************************************************************************************************************************** -->
+
+<aura:component controller="HOG_ClientShippingInfo" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="selectedClientId" type="string"/>
+    <aura:attribute name="orderId" type="string"/>
+    <aura:attribute name="recordId" type="string"/>
+    <aura:attribute name="orderorRecord" type="Order"/>
+    
+    <aura:registerEvent name="SelectedClient" type="c:HOG_SelectedClientEvent"/>  
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <ui:outputText value="{!v.orderorRecord.account.FirstName}" />
+    <ui:outputText value="{!v.orderorRecord.account.LastName}" />
+    <ui:outputText value="{!v.orderorRecord.account.PersonBirthdate}" />
+    <lightning:recordEditForm objectApiName="Order">
+        <!-- the messages component is for error messages -->
+        <lightning:messages />
+        
+        
+        <div class="slds-m-top_medium">
+            <lightning:button variant="brand" onclick="{! c.Back }" name="Back" label="Back" />
+            <lightning:button disabled="{!v.disabled}" variant="brand" onclick="{! c.Next }" name="Next" label="Next" />
+        </div>
+    </lightning:recordEditForm>
+    
+    
+</aura:component>
